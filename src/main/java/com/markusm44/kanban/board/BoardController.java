@@ -43,20 +43,12 @@ public class BoardController {
 
   @PostMapping("/board")
   public ResponseEntity<?> createBoard(@Valid @RequestBody CreateBoardRequest boardRequest) {
-    if (boardRequest.getName() == null) {
-      String responseMessage = "Missing required field 'name'.";
-      return ResponseEntity
-          .status(HttpStatus.BAD_REQUEST)
-          .body(new ErrorResponseMessage(HttpStatus.BAD_REQUEST.value(),
-              responseMessage));
-    }
-
     SuccessResponseMessage response = boardService.createNewBoard(boardRequest);
     return ResponseEntity.created(null).body(response);
   }
 
   @PutMapping("/board/{id}")
-  public ResponseEntity<?> updateBoard(@PathVariable long id, @RequestBody UpdateBoardRequest boardDetails) {
+  public ResponseEntity<?> updateBoard(@PathVariable long id, @Valid @RequestBody UpdateBoardRequest boardDetails) {
     if (boardRepository.findById(id).isEmpty()) {
       String responseMessage = "Board with id " + id + " not found.";
       return ResponseEntity

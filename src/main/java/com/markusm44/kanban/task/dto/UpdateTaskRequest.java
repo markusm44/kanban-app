@@ -1,9 +1,18 @@
 package com.markusm44.kanban.task.dto;
 
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class UpdateTaskRequest {
+  @Pattern(regexp = "(?s).*\\S.*", message = "must not be blank")
+  @Size(max = 255)
   private String name;
+
+  @Size(max = 255)
   private String description;
   private Boolean completed;
+
+  @Size(max = 255)
   private String tags;
 
   public String getName() {

@@ -1,7 +1,14 @@
 package com.markusm44.kanban.board.dto;
 
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class UpdateBoardRequest {
+  @Pattern(regexp = "(?s).*\\S.*", message = "must not be blank")
+  @Size(max = 255)
   private String name;
+
+  @Size(max = 255)
   private String description;
 
   public String getName() {

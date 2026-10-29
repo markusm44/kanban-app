@@ -1,11 +1,25 @@
 package com.markusm44.kanban.task.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class CreateTaskRequest {
+  @Positive
   private long boardId;
+
+  @Positive
   private long listId;
+
+  @NotBlank
+  @Size(max = 255)
   private String name;
+
+  @Size(max = 255)
   private String description;
   private Boolean completed;
+
+  @Size(max = 255)
   private String tags;
 
   public long getBoardId() {

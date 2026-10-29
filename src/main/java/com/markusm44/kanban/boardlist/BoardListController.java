@@ -63,21 +63,13 @@ public class BoardListController {
           .body(new ErrorResponseMessage(HttpStatus.NOT_FOUND.value(), responseMessage));
     }
 
-    if (boardListRequest.getName() == null) {
-      String responseMessage = "Missing required field 'name'.";
-      return ResponseEntity
-          .status(HttpStatus.BAD_REQUEST)
-          .body(new ErrorResponseMessage(HttpStatus.BAD_REQUEST.value(),
-              responseMessage));
-    }
-
     SuccessResponseMessage response = boardListService.createNewBoardList(boardListRequest);
     return ResponseEntity.created(null).body(response);
   }
 
   @PutMapping("/list/{id}")
   public ResponseEntity<?> updateBoardList(@PathVariable long id,
-      @RequestBody UpdateBoardListRequest boardListRequest) {
+      @Valid @RequestBody UpdateBoardListRequest boardListRequest) {
     if (boardListRepository.findById(id).isEmpty()) {
       String responseMessage = "List with id " + id + "not found.";
       return ResponseEntity

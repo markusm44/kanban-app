@@ -73,12 +73,12 @@ public class TaskController {
           .body(new ErrorResponseMessage(HttpStatus.NOT_FOUND.value(), responseMessage));
     }
 
-    if (taskRequest.getName() == null) {
-      String responseMessage = "Missing required field 'name'.";
+    if (boardListRepository.findByBoardId(taskRequest.getBoardId()).isEmpty()) {
+      String responseMessage = "List " + taskRequest.getListId() + " does not exist for board "
+          + taskRequest.getBoardId() + ".";
       return ResponseEntity
-          .status(HttpStatus.BAD_REQUEST)
-          .body(new ErrorResponseMessage(HttpStatus.BAD_REQUEST.value(),
-              responseMessage));
+          .status(HttpStatus.NOT_FOUND)
+          .body(new ErrorResponseMessage(HttpStatus.NOT_FOUND.value(), responseMessage));
     }
 
     SuccessResponseMessage response = taskService.createNewTask(taskRequest);
@@ -86,7 +86,7 @@ public class TaskController {
   }
 
   @PutMapping("/task/{id}")
-  public ResponseEntity<?> updateTask(@PathVariable long id, @RequestBody UpdateTaskRequest taskRequest) {
+  public ResponseEntity<?> updateTask(@PathVariable long id, @Valid @RequestBody UpdateTaskRequest taskRequest) {
     if (taskRepository.findById(id).isEmpty()) {
       String responseMessage = "Task with id " + id + " not found.";
       return ResponseEntity
